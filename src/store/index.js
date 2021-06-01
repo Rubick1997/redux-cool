@@ -1,11 +1,11 @@
 import { createStore, combineReducers } from "redux";
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-const initialState = { counter: 0, showCounter: true };
+const initialCounterState = { counter: 0, showCounter: true };
 
 export const counterSlice = createSlice({
   name: "counter",
-  initialState: initialState,
+  initialState: initialCounterState,
   reducers: {
     increment(state) {
       state.counter++;
@@ -21,8 +21,35 @@ export const counterSlice = createSlice({
     },
   },
 });
-//action will always overrride the current state
-//never change the existing state, overwrite it with the brand new state
+
+const initialAuthState = {
+  isAuthenticated: false,
+};
+
+export const authSlice = createSlice({
+  name: "authentication",
+  initialState: initialAuthState,
+  reducers: {
+    login(state) {
+      state.isAuthenticated = true;
+    },
+    logout(state) {
+      state.isAuthenticated = false;
+    },
+  },
+});
+
+const store = configureStore({
+  reducer: {
+    counter: counterSlice.reducer,
+    auth: authSlice.reducer,
+  },
+});
+
+export default store;
+
+//action will always override the current state
+//never change the existing state, override it with the brand new state
 
 // const counterReducer = (state = initialState, action) => {
 //   if (action.type === "increment") {
@@ -46,9 +73,3 @@ export const counterSlice = createSlice({
 
 //   return state;
 // };
-
-const store = configureStore({
-    reducer: counterSlice.reducer
-  });
-  
-export default store;
